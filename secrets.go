@@ -20,9 +20,10 @@ var (
 	wordList  = regexp.MustCompile(`^[a-z]{3,8}( [a-z]{3,8})+$`)
 
 	// Names of values that have the shape of a key and are not one.
-	benignName = regexp.MustCompile(`(?i)(HASH|ROOT|SALT|TOPIC|SELECTOR|DIGEST|DOMAIN|SEPARATOR|BYTECODE|SLOT|NONCE|TXN?(_|$)|SIG(NATURE)?(_|$)|_ID$|^ID$|UID)`)
-	walletName = regexp.MustCompile(`(?i)(PRIVATE|MNEMONIC|SEED|KEYPAIR|WALLET|SIGNER|DEPLOYER)`)
-	keyName    = regexp.MustCompile(`(?i)(PRIVATE|PRIV_?KEY|(^|_)PK($|_)|SECRET|MNEMONIC|SEED|PHRASE|DEPLOYER|SIGNER|WALLET|KEYPAIR|ACCOUNT_KEY)`)
+	benignName    = regexp.MustCompile(`(?i)(HASH|ROOT|SALT|TOPIC|SELECTOR|DIGEST|DOMAIN|SEPARATOR|BYTECODE|SLOT|NONCE|TXN?(_|$)|SIG(NATURE)?(_|$)|_ID$|^ID$|UID)`)
+	appSecretName = regexp.MustCompile(`(?i)(API|WEBHOOK|CRON|SESSION|JWT|AUTH|TOKEN|COOKIE|CSRF|HMAC|ENCRYPT|CLIENT|DATABASE|(^|_)DB(_|$)|REDIS|PASSWORD|PASSWD|SIGNING_SECRET|APP_SECRET|TELEGRAM|SLACK|DISCORD|GITHUB|STRIPE|SENTRY|OPENAI|ANTHROPIC|GROQ|ETHERSCAN|ALCHEMY|INFURA|VERCEL|SUPABASE|ADMIN)`)
+	walletName    = regexp.MustCompile(`(?i)(PRIVATE|MNEMONIC|SEED|KEYPAIR|WALLET|SIGNER|DEPLOYER)`)
+	keyName       = regexp.MustCompile(`(?i)(PRIVATE|PRIV_?KEY|(^|_)PK($|_)|SECRET|MNEMONIC|SEED|PHRASE|DEPLOYER|SIGNER|WALLET|KEYPAIR|ACCOUNT_KEY)`)
 )
 
 // The keys every local node hands out. Everyone knows them, so they are not secrets.
@@ -61,6 +62,11 @@ func walletSecretKind(value string) string {
 // secretKind is walletSecretKind with the variable's name taken into account.
 func secretKind(name, value string) string {
 	kind := walletSecretKind(value)
+	// An application's own secret (an API key, a webhook or session secret) is very often 64 random hex digits,
+	// the same shape as a private key. Its name says what it is, unless the name also says "wallet".
+	if kind != "" && appSecretName.MatchString(name) && !walletName.MatchString(name) {
+		return ""
+	}
 	if kind == "" {
 		// A 32- or 64-byte key written in base64 looks like many other secrets, so the name has to say it is a key.
 		if base64Key.MatchString(strings.TrimSpace(value)) && walletName.MatchString(name) {

@@ -22,6 +22,19 @@ func TestSecretKind(t *testing.T) {
 		{"PRIVATE_KEY", "0XAC0974BEC39A17E36BA4A6B4D238FF944BACB478CBED5EFCAE784D7BF4F2FF80", ""},
 		{"SOMETHING", fakeKey, "possible private key"},
 		{"MERKLE_ROOT", fakeKey, ""},
+		// An app's own secrets have the shape of a key and are not one.
+		{"ADMIN_API_KEY", fakeKey[2:], ""},
+		{"TELEGRAM_WEBHOOK_SECRET", fakeKey[2:], ""},
+		{"CRON_SECRET", fakeKey[2:], ""},
+		{"NEXTAUTH_SECRET", fakeKey[2:], ""},
+		{"SESSION_SECRET", fakeKey, ""},
+		{"JWT_SECRET", fakeKey, ""},
+		{"ETHERSCAN_API_KEY", fakeKey[2:], ""},
+		// ...unless the name says wallet.
+		{"ADMIN_PRIVATE_KEY", fakeKey, "private key"},
+		{"API_SIGNER_KEY", fakeKey, "private key"},
+		{"SECRET_KEY", fakeKey, "private key"},
+		{"SECRET", fakeKey, "private key"},
 		{"SALT", fakeKey, ""},
 		{"DEPLOY_TX_HASH", fakeKey, ""},
 		{"PRIVATE_KEY", "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", ""}, // the local node's first account

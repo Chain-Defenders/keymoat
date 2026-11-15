@@ -50,7 +50,7 @@ keymoat goes by the shape of a value:
 | A JSON list of 64 numbers | Solana keypair |
 | 32 or 64 bytes in base64, only under a name that says it is a key (`PRIVATE`, `WALLET`, `SEED`, `KEYPAIR`, `SIGNER`, `DEPLOYER`, `MNEMONIC`) | key in base64 |
 
-The variable's name then decides how sure it is. A name such as `PRIVATE_KEY`, `DEPLOYER`, `MNEMONIC` or `WALLET` makes it certain. A name that says it is something else (`SALT`, `MERKLE_ROOT`, `TX_HASH`, `DOMAIN_SEPARATOR`, `..._ID`) clears it. Any other name gives "possible private key", which is hidden from builds and tests all the same.
+The variable's name then decides. An application's own secret is very often 64 random hex digits, the same shape as a private key, so a name that marks one (`API`, `WEBHOOK`, `CRON`, `SESSION`, `JWT`, `AUTH`, `TOKEN`, `PASSWORD`, a service's name such as `TELEGRAM` or `STRIPE`, ...) clears it, unless the name also says wallet (`PRIVATE`, `WALLET`, `SIGNER`, `DEPLOYER`, `SEED`, `MNEMONIC`, `KEYPAIR`). A name such as `PRIVATE_KEY`, `DEPLOYER`, `MNEMONIC` or `WALLET` makes it certain. A name that says it is something else (`SALT`, `MERKLE_ROOT`, `TX_HASH`, `DOMAIN_SEPARATOR`, `..._ID`) clears it. Any other name gives "possible private key", which is hidden from builds and tests all the same.
 
 The keys every local node hands out (the first Anvil and Hardhat accounts, and the `test test ... junk` phrase) are public and are ignored.
 
