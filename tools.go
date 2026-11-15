@@ -33,6 +33,7 @@ type Plan struct {
 	CLIHosts   []string // hosts named on the command line: the user typed them
 	Gate       *Gate    // set when the user is asked first
 	Notes      []string // one-line remarks printed before the run
+	WarmUp     string   // a program to start once before the run
 	VaultRefs  []vaultRef
 }
 
@@ -480,6 +481,7 @@ func classifyAnchor(p *Plan, c *Context) {
 	// Tests on a local validator get a wallet that is worth nothing, so the real one is never in reach of test code.
 	if (sub == "test" || sub == "localnet") && local && !explicit {
 		p.Args = append([]string{"--provider.wallet", devWalletPath()}, p.Args...)
+		p.WarmUp = "solana-test-validator"
 		p.Notes = append(p.Notes, "tests run with a throwaway wallet, not your own (pass --provider.wallet to choose one)")
 		return
 	}

@@ -132,7 +132,7 @@ On Linux a sandboxed command has its own network. Start the node in the same com
 
 ### `anchor test`: "Test validator does not look started"
 
-Seen now and then on the first run after a while, when the validator takes longer than Anchor waits for it. Run it again, or raise the wait in `Anchor.toml`:
+Seen now and then on the first run after a while, when the validator takes longer to start than the five seconds Anchor waits. keymoat starts the validator program once before a local test run to take that delay out; if it still happens, run it again, or raise the wait in `Anchor.toml`:
 
 ```toml
 [test]

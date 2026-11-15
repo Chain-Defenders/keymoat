@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"os"
@@ -114,6 +115,9 @@ func runTool(tool string, args []string, opts runOptions) int {
 	for _, n := range plan.Notes {
 		say("%s", n)
 	}
+	if plan.WarmUp != "" {
+		warmUp(plan.WarmUp)
+	}
 	if hasFlag(plan.Args, "--provider.wallet") && firstFlagValue(plan.Args, "--provider.wallet") == devWalletPath() {
 		if _, err := devWallet(); err != nil {
 			say("cannot make the throwaway wallet: %v", err)
@@ -152,6 +156,19 @@ func runTool(tool string, args []string, opts runOptions) int {
 		return 126
 	}
 	return runSandboxed(real, plan, c, &cleanups)
+}
+
+// warmUp runs a program once and throws the result away. Anchor gives the test validator five seconds to come
+// up; the first start of that large program after a while can take longer than that on macOS, and the test run
+// then fails before it began. Starting it once beforehand takes that wait out of Anchor's five seconds.
+func warmUp(program string) {
+	path, err := exec.LookPath(program)
+	if err != nil {
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	exec.CommandContext(ctx, path, "--version").Run()
 }
 
 // withKeyPath puts the temporary key file where the tool expects a path.

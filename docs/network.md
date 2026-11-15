@@ -29,6 +29,7 @@ What the toolchains themselves need:
 | For | Hosts |
 |---|---|
 | Packages | `registry.npmjs.org`, `registry.yarnpkg.com`, `repo.yarnpkg.com`, `registry.npmmirror.com`, `nodejs.org`, `crates.io`, `*.crates.io`, `static.rust-lang.org`, `api.soldeer.xyz`, `*.soldeer.xyz`, `soldeer-revisions.s3.amazonaws.com` |
+| Fonts for web builds | `fonts.googleapis.com`, `fonts.gstatic.com` |
 | Source | `github.com`, `api.github.com`, `codeload.github.com`, `*.githubusercontent.com`, `gitlab.com`, `bitbucket.org` |
 | Compilers and toolchains | `binaries.soliditylang.org`, `solc-bin.ethereum.org`, `release.anza.xyz`, `release.solana.com`, `*.vyperlang.org` |
 | Contract verification | `*.etherscan.io`, `*.basescan.org`, `*.arbiscan.io`, `*.polygonscan.com`, `*.bscscan.com`, `*.snowtrace.io`, `*.blockscout.com`, `sourcify.dev`, `*.sourcify.dev`, `*.routescan.io` |

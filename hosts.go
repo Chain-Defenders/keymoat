@@ -19,6 +19,8 @@ var defaultHosts = []string{
 	"registry.npmjs.org", "registry.yarnpkg.com", "repo.yarnpkg.com", "registry.npmmirror.com", "nodejs.org",
 	"crates.io", "*.crates.io", "static.rust-lang.org",
 	"api.soldeer.xyz", "*.soldeer.xyz", "soldeer-revisions.s3.amazonaws.com",
+	// fonts a web build fetches (Next.js and others)
+	"fonts.googleapis.com", "fonts.gstatic.com",
 	// source
 	"github.com", "api.github.com", "codeload.github.com", "*.githubusercontent.com", "gitlab.com", "bitbucket.org",
 	// compilers and toolchains

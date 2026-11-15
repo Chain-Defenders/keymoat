@@ -151,6 +151,11 @@ func cmdUninstall(args []string) int {
 		for _, line := range strings.Split(string(data), "\n") {
 			if !strings.Contains(line, rcMarker) {
 				keep = append(keep, line)
+				continue
+			}
+			// And the empty line that was put in front of it.
+			if n := len(keep); n > 0 && keep[n-1] == "" {
+				keep = keep[:n-1]
 			}
 		}
 		if err := os.WriteFile(f, []byte(strings.Join(keep, "\n")), 0o644); err == nil {

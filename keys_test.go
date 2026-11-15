@@ -340,3 +340,42 @@ func TestProxyUnderLoad(t *testing.T) {
 		t.Errorf("%d goroutines still running after the proxy stopped (%d before)", n, before)
 	}
 }
+
+func TestIdleTunnelIsClosed(t *testing.T) {
+	old := tunnelIdle
+	tunnelIdle = 300 * time.Millisecond
+	defer func() { tunnelIdle = old }()
+	quiet, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer quiet.Close()
+	go func() {
+		for {
+			c, err := quiet.Accept()
+			if err != nil {
+				return
+			}
+			defer c.Close() // accepts, then says nothing
+		}
+	}()
+	p := newProxy(func(string) bool { return false })
+	ln, _ := net.Listen("tcp", "127.0.0.1:0")
+	p.start(ln)
+	defer p.stop()
+	c, err := net.Dial("tcp", ln.Addr().String())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer c.Close()
+	io.WriteString(c, "CONNECT "+quiet.Addr().String()+" HTTP/1.1\r\n\r\n")
+	buf := make([]byte, 256)
+	c.SetReadDeadline(time.Now().Add(5 * time.Second))
+	if n, _ := c.Read(buf); !strings.Contains(string(buf[:n]), "200") {
+		t.Fatalf("no tunnel: %q", buf[:n])
+	}
+	start := time.Now()
+	if _, err := c.Read(buf); err == nil || time.Since(start) > 3*time.Second {
+		t.Errorf("an idle tunnel stayed open (%v, %v)", err, time.Since(start))
+	}
+}

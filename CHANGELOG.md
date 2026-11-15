@@ -21,4 +21,11 @@ Hardening from the pre-release review:
 - More signing commands are asked about: `forge script --resume`, `forge create`, `cast`'s short names, `mktx`, `erc20`, `wallet sign`.
 - A warning when a command plants a program in the repository's git settings.
 
+From real projects and the first real install:
+
+- Built-in hosts: Soldeer's download host and Google Fonts (which Next.js builds fetch).
+- An application's own 64-digit secrets (API keys, webhook and session secrets) are no longer taken for wallet keys.
+- The test validator is started once before a local `anchor test`, so a slow first start does not fail the run.
+- Idle proxy connections are closed after ten minutes; `keymoat uninstall` restores the shell start-up file exactly.
+
 Known gaps: hardware wallets are untested; the Solana and Anchor tools are untested on Linux. See the [limits](README.md#limits).

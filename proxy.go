@@ -137,15 +137,36 @@ func (p *Proxy) tunnel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	client.Write([]byte("HTTP/1.1 200 Connection established\r\n\r\n"))
+	// A tunnel nothing has passed through for a while is closed: a connection must not be held open for ever.
+	up := &idleConn{Conn: upstream, idle: tunnelIdle}
+	down := &idleConn{Conn: client, idle: tunnelIdle}
 	go func() {
 		// Bytes the client sent right behind its CONNECT are already in the buffer.
-		io.Copy(upstream, buf)
+		io.Copy(up, buf)
 		closeWrite(upstream)
 	}()
-	io.Copy(client, upstream)
+	io.Copy(down, up)
 	closeWrite(client)
 	client.Close()
 	upstream.Close()
+}
+
+var tunnelIdle = 10 * time.Minute
+
+// idleConn pushes its deadline forward each time something is read or written.
+type idleConn struct {
+	net.Conn
+	idle time.Duration
+}
+
+func (c *idleConn) Read(b []byte) (int, error) {
+	c.Conn.SetDeadline(time.Now().Add(c.idle))
+	return c.Conn.Read(b)
+}
+
+func (c *idleConn) Write(b []byte) (int, error) {
+	c.Conn.SetDeadline(time.Now().Add(c.idle))
+	return c.Conn.Write(b)
 }
 
 func closeWrite(c net.Conn) {
