@@ -52,6 +52,8 @@ Three checks:
 - **Tools:** for each installed tool, whether typing its name reaches keymoat.
 - **Keys in plain text:** the Solana tool's default wallet and the current project's env files.
 
+`keymoat doctor --json` prints the same checks as one JSON object, for editors and scripts: `sandbox` (`ok`, `detail`), `tools` (each with `name`, `through`, `found`, `real`), `pathFirst`, `shimDir`, `project` and `plainKeys` (each with `file`, `line`, `name`, `kind`, `fix`).
+
 Exits with code 1 when something is wrong.
 
 ## keymoat run

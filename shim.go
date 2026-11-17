@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -166,25 +167,47 @@ func cmdUninstall(args []string) int {
 	return 0
 }
 
-// cmdDoctor checks that keymoat is where it should be, and says in one line each what is wrong.
-func cmdDoctor(args []string) int {
-	problems := 0
-	bad := func(format string, a ...any) {
-		problems++
-		fmt.Printf("  ✗ "+format+"\n", a...)
-	}
-	good := func(format string, a ...any) { fmt.Printf("  ✓ "+format+"\n", a...) }
+// DoctorReport is what doctor found, also printed as JSON for editors (`keymoat doctor --json`).
+type DoctorReport struct {
+	Version   string        `json:"version"`
+	Sandbox   DoctorCheck   `json:"sandbox"`
+	Tools     []DoctorTool  `json:"tools"`
+	PathFirst bool          `json:"pathFirst"`
+	ShimDir   string        `json:"shimDir"`
+	Project   string        `json:"project,omitempty"`
+	PlainKeys []DoctorPlain `json:"plainKeys"`
+}
 
-	fmt.Println("Sandbox")
+type DoctorCheck struct {
+	OK     bool   `json:"ok"`
+	Detail string `json:"detail"`
+}
+
+type DoctorTool struct {
+	Name    string `json:"name"`
+	Through bool   `json:"through"` // the name on the PATH is keymoat
+	Found   string `json:"found,omitempty"`
+	Real    string `json:"real"`
+}
+
+type DoctorPlain struct {
+	File string `json:"file"`
+	Line int    `json:"line,omitempty"`
+	Name string `json:"name,omitempty"`
+	Kind string `json:"kind"`
+	Fix  string `json:"fix"`
+}
+
+func doctorReport() DoctorReport {
+	r := DoctorReport{Version: version, PathFirst: pathHasShimsFirst(), ShimDir: shimDir(), Tools: []DoctorTool{}, PlainKeys: []DoctorPlain{}}
 	if err := sandboxAvailable(); err != nil {
-		bad("%v", err)
+		r.Sandbox = DoctorCheck{Detail: err.Error()}
 	} else if out, err := sandboxSelfTest(); err != nil {
-		bad("the sandbox did not hold: %v %s", err, out)
+		r.Sandbox = DoctorCheck{Detail: fmt.Sprintf("the sandbox did not hold: %v %s", err, out)}
 	} else {
-		good("works: a sandboxed command could not read a protected file")
+		r.Sandbox = DoctorCheck{OK: true, Detail: "works: a sandboxed command could not read a protected file"}
 	}
 
-	fmt.Println("Tools")
 	self, _ := os.Executable()
 	self = realPath(self)
 	for _, t := range toolNames() {
@@ -192,45 +215,102 @@ func cmdDoctor(args []string) int {
 		if err != nil {
 			continue
 		}
-		found, err := exec.LookPath(t)
-		switch {
-		case err != nil:
-			bad("%s: not found on the PATH", t)
-		case realPath(found) == self:
-			good("%-10s goes through keymoat  (the tool itself: %s)", t, real)
-		default:
-			bad("%-10s runs directly from %s, not through keymoat", t, found)
+		tool := DoctorTool{Name: t, Real: real}
+		if found, err := exec.LookPath(t); err == nil {
+			tool.Found = found
+			tool.Through = realPath(found) == self
 		}
-	}
-	if !pathHasShimsFirst() {
-		fmt.Printf("\n  %s is not first on the PATH in this terminal. Put this at the end of your shell's start-up file and open a new terminal:\n\n    %s\n\n", shimDir(), rcLine())
-		fmt.Println("  With nvm, `nvm use` puts Node's folder first again: open a new terminal afterwards.")
+		r.Tools = append(r.Tools, tool)
 	}
 
-	fmt.Println("Keys in plain text")
 	home := homeDir()
-	plain := 0
 	if _, key := solanaConfig(home); isSolanaKeypairFile(expandHome(key)) {
-		plain++
-		bad("%s is a Solana keypair in plain text: `keymoat keys move %s`", key, key)
+		r.PlainKeys = append(r.PlainKeys, DoctorPlain{File: key, Kind: "Solana keypair", Fix: "keymoat keys move " + key})
 	}
 	if cwd, err := os.Getwd(); err == nil {
 		if root := projectRoot(cwd, home); root != "" {
+			r.Project = root
 			for _, f := range projectEnvFiles(root) {
 				for _, s := range f.Secrets {
-					plain++
-					bad("%s line %d: %s (%s): `keymoat keys move`", relTo(root, f.Path), s.Line, s.Name, secretKind(s.Name, s.Value))
+					r.PlainKeys = append(r.PlainKeys, DoctorPlain{File: f.Path, Line: s.Line, Name: s.Name, Kind: secretKind(s.Name, s.Value), Fix: "keymoat keys move"})
 				}
 			}
 		}
 	}
-	if plain == 0 {
+	return r
+}
+
+func (r DoctorReport) problems() int {
+	n := len(r.PlainKeys)
+	if !r.Sandbox.OK {
+		n++
+	}
+	for _, t := range r.Tools {
+		if !t.Through {
+			n++
+		}
+	}
+	return n
+}
+
+// cmdDoctor checks that keymoat is where it should be, and says in one line each what is wrong.
+func cmdDoctor(args []string) int {
+	asJSON := false
+	for _, a := range args {
+		if a != "--json" {
+			return usageError("keymoat doctor [--json]")
+		}
+		asJSON = true
+	}
+	r := doctorReport()
+	code := 0
+	if r.problems() > 0 {
+		code = 1
+	}
+	if asJSON {
+		data, _ := json.MarshalIndent(r, "", "  ")
+		fmt.Println(string(data))
+		return code
+	}
+
+	bad := func(format string, a ...any) { fmt.Printf("  ✗ "+format+"\n", a...) }
+	good := func(format string, a ...any) { fmt.Printf("  ✓ "+format+"\n", a...) }
+
+	fmt.Println("Sandbox")
+	if r.Sandbox.OK {
+		good("%s", r.Sandbox.Detail)
+	} else {
+		bad("%s", r.Sandbox.Detail)
+	}
+
+	fmt.Println("Tools")
+	for _, t := range r.Tools {
+		switch {
+		case t.Found == "":
+			bad("%s: not found on the PATH", t.Name)
+		case t.Through:
+			good("%-10s goes through keymoat  (the tool itself: %s)", t.Name, t.Real)
+		default:
+			bad("%-10s runs directly from %s, not through keymoat", t.Name, t.Found)
+		}
+	}
+	if !r.PathFirst {
+		fmt.Printf("\n  %s is not first on the PATH in this terminal. Put this at the end of your shell's start-up file and open a new terminal:\n\n    %s\n\n", r.ShimDir, rcLine())
+		fmt.Println("  With nvm, `nvm use` puts Node's folder first again: open a new terminal afterwards.")
+	}
+
+	fmt.Println("Keys in plain text")
+	for _, p := range r.PlainKeys {
+		if p.Line == 0 {
+			bad("%s is a %s in plain text: `%s`", p.File, p.Kind, p.Fix)
+			continue
+		}
+		bad("%s line %d: %s (%s): `%s`", relTo(r.Project, p.File), p.Line, p.Name, p.Kind, p.Fix)
+	}
+	if len(r.PlainKeys) == 0 {
 		good("none in this project or the Solana settings (`keymoat scan DIR` looks further)")
 	}
-	if problems > 0 {
-		return 1
-	}
-	return 0
+	return code
 }
 
 // sandboxSelfTest runs a small command in the sandbox that must fail: reading a protected file.

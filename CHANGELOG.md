@@ -27,5 +27,6 @@ From real projects and the first real install:
 - An application's own 64-digit secrets (API keys, webhook and session secrets) are no longer taken for wallet keys.
 - The test validator is started once before a local `anchor test`, so a slow first start does not fail the run.
 - Idle proxy connections are closed after ten minutes; `keymoat uninstall` restores the shell start-up file exactly.
+- `keymoat doctor --json`, for the ForgeDefender extension and other editors.
 
 Known gaps: hardware wallets are untested; the Solana and Anchor tools are untested on Linux. See the [limits](README.md#limits).
