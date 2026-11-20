@@ -5,18 +5,18 @@ By the end of this page your usual commands run through keymoat, and you know wh
 ## Before you start
 
 - **macOS or Linux.** On Windows, work inside WSL and follow the Linux steps.
-- **Go 1.23 or later**, to build it.
 - **Linux only:** [bubblewrap](https://github.com/containers/bubblewrap). `sudo apt install bubblewrap`, or your distribution's equivalent.
 
-## 1. Build and install
+## 1. Install
 
 ```
-git clone https://github.com/Chain-Defenders/keymoat
-cd keymoat
-go build -o keymoat .
-sudo mv keymoat /usr/local/bin/
+os=$(uname -s | tr A-Z a-z); arch=$(uname -m | sed 's/x86_64/amd64/; s/aarch64/arm64/')
+curl -fLo keymoat "https://github.com/Chain-Defenders/keymoat/releases/latest/download/keymoat-$os-$arch"
+chmod +x keymoat && sudo mv keymoat /usr/local/bin/
 keymoat version
 ```
+
+To build it yourself instead (Go 1.23 or later): `go build -o keymoat .` in a clone of the repository.
 
 Any folder on your `PATH` works in place of `/usr/local/bin`.
 

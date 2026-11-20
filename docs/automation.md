@@ -23,8 +23,8 @@ Install keymoat and bubblewrap, then run the build through it:
 ```yaml
 - run: sudo apt-get install -y bubblewrap
 - run: |
-    git clone https://github.com/Chain-Defenders/keymoat /tmp/keymoat
-    cd /tmp/keymoat && go build -o keymoat . && sudo mv keymoat /usr/local/bin/
+    curl -fLo keymoat https://github.com/Chain-Defenders/keymoat/releases/latest/download/keymoat-linux-amd64
+    chmod +x keymoat && sudo mv keymoat /usr/local/bin/
 - run: keymoat install
 - run: echo "$HOME/.keymoat/bin" >> "$GITHUB_PATH"
 - run: npm ci && forge test

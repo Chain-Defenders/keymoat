@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (not yet released)
+## 0.1.0
 
 First version. keymoat replaces forge-guard, which tried to detect key theft as it happened; keymoat prevents it.
 

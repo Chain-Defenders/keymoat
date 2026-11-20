@@ -24,12 +24,15 @@ Made by [Chain Defenders](https://chaindefenders.xyz).
 
 ## Install
 
-Build it (Go 1.23 or later):
+Download it (macOS or Linux, Intel or ARM):
 
 ```
-git clone https://github.com/Chain-Defenders/keymoat && cd keymoat
-go build -o keymoat . && sudo mv keymoat /usr/local/bin/
+os=$(uname -s | tr A-Z a-z); arch=$(uname -m | sed 's/x86_64/amd64/; s/aarch64/arm64/')
+curl -fLo keymoat "https://github.com/Chain-Defenders/keymoat/releases/latest/download/keymoat-$os-$arch"
+chmod +x keymoat && sudo mv keymoat /usr/local/bin/
 ```
+
+The [release page](https://github.com/Chain-Defenders/keymoat/releases/latest) has a `SHA256SUMS` file to check the download against. Or build it yourself with Go 1.23 or later: `go build -o keymoat .` in a clone of this repository.
 
 Then let it stand in front of your tools:
 
