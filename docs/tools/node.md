@@ -2,7 +2,7 @@
 
 `npm`, `npx`, `pnpm`, `pnpx`, `yarn`, `bun` and `bunx` are sandboxed. Installing a package is the most common way untrusted code gets to run on a developer's machine: every dependency can ship an install script.
 
-`node` itself is not put behind keymoat by default (see [below](#node-itself)).
+`node` itself is not put behind KeyMoat by default (see [below](#node-itself)).
 
 ## Installs
 
@@ -38,7 +38,7 @@ If you install from a **private registry** that needs the token, allow it in `~/
 
 ### Global installs
 
-`npm install -g` writes outside the project and fails under keymoat. Run it with `KEYMOAT=off npm install -g NAME`.
+`npm install -g` writes outside the project and fails under KeyMoat. Run it with `KEYMOAT=off npm install -g NAME`.
 
 ## Hardhat
 
@@ -58,7 +58,7 @@ A common configuration reads the key at load time:
 accounts: [process.env.PRIVATE_KEY]
 ```
 
-Under keymoat, `PRIVATE_KEY` is not set during `compile` and `test`, and Hardhat rejects the undefined account. Make the configuration tolerate a missing key:
+Under KeyMoat, `PRIVATE_KEY` is not set during `compile` and `test`, and Hardhat rejects the undefined account. Make the configuration tolerate a missing key:
 
 ```js
 accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
@@ -83,9 +83,9 @@ keymoat: this command signs with a real key.
   Signs with plain text: PRIVATE_KEY in .env
 ```
 
-keymoat shows the network's *name*: the URL is inside your configuration, which is code, so the chain is not looked up. Check the name.
+KeyMoat shows the network's *name*: the URL is inside your configuration, which is code, so the chain is not looked up. Check the name.
 
-After you confirm, the command runs in the sandbox with the project's env files readable. The RPC host must be allowed: keymoat finds URLs written in `hardhat.config.*` and in `.env` and asks about them once.
+After you confirm, the command runs in the sandbox with the project's env files readable. The RPC host must be allowed: KeyMoat finds URLs written in `hardhat.config.*` and in `.env` and asks about them once.
 
 ## Package scripts
 
@@ -99,11 +99,11 @@ After you confirm, the command runs in the sandbox with the project's env files 
 | `solana program deploy`, `cast send` | signing |
 | anything else | a normal run, no keys |
 
-keymoat reads the script's text and nothing more. A script like `"release": "node scripts/release.js"` is not recognised as a deploy. It runs without keys and fails; run it with `KEYMOAT_KEYS=1 npm run release`.
+KeyMoat reads the script's text and nothing more. A script like `"release": "node scripts/release.js"` is not recognised as a deploy. It runs without keys and fails; run it with `KEYMOAT_KEYS=1 npm run release`.
 
 ## npx and one-off packages
 
-`npx some-package` downloads and runs a package you may never have seen. Under keymoat it runs with no keys and a limited network, which is the right default for that.
+`npx some-package` downloads and runs a package you may never have seen. Under KeyMoat it runs with no keys and a limited network, which is the right default for that.
 
 ## node itself
 
@@ -113,7 +113,7 @@ keymoat reads the script's text and nothing more. A script like `"release": "nod
 keymoat run -- node scripts/analyse.js
 ```
 
-or put `node` behind keymoat permanently:
+or put `node` behind KeyMoat permanently:
 
 ```
 keymoat install --tools node
@@ -123,7 +123,7 @@ This is off by default because editors and many tools start `node` for their own
 
 ## Environment files
 
-Frameworks load `.env`, `.env.local` and friends themselves. When one of those files holds a wallet key, keymoat hides the whole file from builds and tests and passes its other variables through the environment. Two effects worth knowing:
+Frameworks load `.env`, `.env.local` and friends themselves. When one of those files holds a wallet key, KeyMoat hides the whole file from builds and tests and passes its other variables through the environment. Two effects worth knowing:
 
 - a variable passed this way wins over the same variable in another env file, because frameworks give the real environment priority;
 - env files in sub-folders are hidden when they hold a key, but only files in the folder you run from and in the project's top folder have their other variables passed through.
@@ -133,6 +133,6 @@ An env file with no wallet key in it is left alone.
 ## Known edges
 
 - **bun 1.2 and earlier** can hang behind any HTTP proxy while re-checking a cached package. Update bun, or run that install with `KEYMOAT_NET=open bun install`.
-- **Node's own `fetch`** follows the proxy only on recent Node versions (keymoat sets `NODE_USE_ENV_PROXY=1`). On older versions a script's `fetch` fails to connect; libraries that handle proxies themselves (npm, Hardhat's downloader) are not affected.
+- **Node's own `fetch`** follows the proxy only on recent Node versions (KeyMoat sets `NODE_USE_ENV_PROXY=1`). On older versions a script's `fetch` fails to connect; libraries that handle proxies themselves (npm, Hardhat's downloader) are not affected.
 - **yarn 1** prints "Cannot find a suitable global folder". It is a warning; the install succeeds.
 - **Native modules** that download prebuilt binaries from a host not on the list are blocked; allow the host the message names.

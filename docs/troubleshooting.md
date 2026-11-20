@@ -7,16 +7,16 @@ keymoat doctor      # is it set up right
 keymoat log         # what it blocked and asked
 ```
 
-To see whether keymoat is the cause at all, run the command once without it: `KEYMOAT=off COMMAND`.
+To see whether KeyMoat is the cause at all, run the command once without it: `KEYMOAT=off COMMAND`.
 
-## Messages from keymoat
+## Messages from KeyMoat
 
 ### `blocked N connection attempts to HOST`
 
 A sandboxed command tried to reach a host that is not allowed.
 
 - **You know the host** (your RPC provider, a private registry): `keymoat allow HOST`, or `keymoat allow --global HOST` for every project.
-- **You do not know it:** leave it blocked, and find out which dependency wanted it. This is what keymoat is for.
+- **You do not know it:** leave it blocked, and find out which dependency wanted it. This is what KeyMoat is for.
 - **Analytics** (`www.google-analytics.com` from Hardhat, for instance): harmless to leave blocked.
 
 ### `X was hidden from this command, like every key`
@@ -41,7 +41,7 @@ Not an error: the one-time question about a project's RPC hosts. See [Network](n
 
 ### `TOOL is not installed (it is not on the PATH)`
 
-keymoat has a link for the tool but cannot find the real one. The tool was removed, or the folder it lives in is no longer on your `PATH`. Reinstall the tool, then run `keymoat install` again.
+KeyMoat has a link for the tool but cannot find the real one. The tool was removed, or the folder it lives in is no longer on your `PATH`. Reinstall the tool, then run `keymoat install` again.
 
 ### `bubblewrap (the bwrap command) is not installed`
 
@@ -53,7 +53,7 @@ A command needed a key from the vault and there is no terminal. Vault keys canno
 
 ### `not opening PATH for this command: it is in a protected folder and is not a key file`
 
-The command named a key, keystore or password file that sits in a protected folder and is not a keystore in `~/.foundry/keystores` or a Solana keypair. keymoat opens one real key file, never a folder and never some other protected file. If the file really is your key, move it into `~/.foundry/keystores` (or use `keymoat keys move`).
+The command named a key, keystore or password file that sits in a protected folder and is not a keystore in `~/.foundry/keystores` or a Solana keypair. KeyMoat opens one real key file, never a folder and never some other protected file. If the file really is your key, move it into `~/.foundry/keystores` (or use `keymoat keys move`).
 
 ### `this command changed the repository's git settings to run a program`
 
@@ -61,7 +61,7 @@ A command added a setting to `.git/config` that makes git run a program. Unless 
 
 ### `KEYMOAT_ACTIVE is set, but this is not a keymoat sandbox: ignoring it`
 
-Something set that variable outside a sandbox, where it has no business. keymoat ignores it and protects the command as usual. Find where it is set (a project's direnv file, a shell start-up file) and remove it.
+Something set that variable outside a sandbox, where it has no business. KeyMoat ignores it and protects the command as usual. Find where it is set (a project's direnv file, a shell start-up file) and remove it.
 
 ## Errors from the tool
 
@@ -71,7 +71,7 @@ The command tried to read a protected file or write outside the project and the 
 
 | What it was doing | Fix |
 |---|---|
-| Writing a cache keymoat does not know | Add the folder to `allowWrite` in [settings](settings.md). |
+| Writing a cache KeyMoat does not know | Add the folder to `allowWrite` in [settings](settings.md). |
 | A global install (`npm install -g`) or a toolchain update | Run it with `KEYMOAT=off`. |
 | Reading `~/.npmrc` for a private registry | Add `"allowRead": ["~/.npmrc"]`. |
 | Reading a keystore or wallet in a build or test | That is the protection working. If the command really signs, see `KEYMOAT_KEYS=1` and [Signing](signing.md). |
@@ -113,14 +113,14 @@ Linux: unprivileged user namespaces are off. See [Platforms](platforms.md#requir
 
 ## Symptoms
 
-### A tool goes around keymoat
+### A tool goes around KeyMoat
 
 `keymoat doctor` shows `runs directly from ...`. The folder `~/.keymoat/bin` is not first on your `PATH`.
 
-- Make sure the keymoat line is the **last** line of your shell's start-up file, after nvm, cargo, foundry and bun add theirs.
+- Make sure the KeyMoat line is the **last** line of your shell's start-up file, after nvm, cargo, foundry and bun add theirs.
 - Open a new terminal after changing it.
 - **nvm:** `nvm use` puts Node's folder first again for that terminal. Open a new terminal, or run `export PATH="$HOME/.keymoat/bin:$PATH"` again.
-- **A tool installed after keymoat** has no link yet: run `keymoat install` again.
+- **A tool installed after KeyMoat** has no link yet: run `keymoat install` again.
 
 ### `bun install` hangs at "Resolving dependencies"
 
@@ -132,7 +132,7 @@ On Linux a sandboxed command has its own network. Start the node in the same com
 
 ### `anchor test`: "Test validator does not look started"
 
-Seen now and then on the first run after a while, when the validator takes longer to start than the five seconds Anchor waits. keymoat starts the validator program once before a local test run to take that delay out; if it still happens, run it again, or raise the wait in `Anchor.toml`:
+Seen now and then on the first run after a while, when the validator takes longer to start than the five seconds Anchor waits. KeyMoat starts the validator program once before a local test run to take that delay out; if it still happens, run it again, or raise the wait in `Anchor.toml`:
 
 ```toml
 [test]
@@ -145,7 +145,7 @@ The tests most likely ran with the throwaway wallet against a validator that did
 
 ### Commands feel slower
 
-keymoat adds about a tenth of a second per command. If it is much more, the project's files may be slow to walk: keymoat reads env files up to three folders deep on each run.
+KeyMoat adds about a tenth of a second per command. If it is much more, the project's files may be slow to walk: KeyMoat reads env files up to three folders deep on each run.
 
 ### The editor's test runner or language server stopped working
 

@@ -1,6 +1,6 @@
 # Pipelines and editors
 
-keymoat asks three kinds of question: whether a project may reach new hosts, whether to go ahead with a signing command, and for a vault password. Without a terminal there is no one to answer. This page says what happens then.
+KeyMoat asks three kinds of question: whether a project may reach new hosts, whether to go ahead with a signing command, and for a vault password. Without a terminal there is no one to answer. This page says what happens then.
 
 ## What changes without a terminal
 
@@ -18,7 +18,7 @@ A build machine usually holds deploy keys and registry tokens as secrets, and ru
 
 ### Build and test jobs
 
-Install keymoat and bubblewrap, then run the build through it:
+Install KeyMoat and bubblewrap, then run the build through it:
 
 ```yaml
 - run: sudo apt-get install -y bubblewrap
@@ -67,18 +67,18 @@ exits with code 1 when a wallet key is in plain text in the project.
 
 ## In an editor
 
-An editor runs your tools for you: a test explorer, a language server, a task. Whether those go through keymoat depends on the `PATH` the editor was started with.
+An editor runs your tools for you: a test explorer, a language server, a task. Whether those go through KeyMoat depends on the `PATH` the editor was started with.
 
-- **Started from a terminal** (`code .`): the editor has your shell's `PATH`, so its `forge` and `cargo` are keymoat's.
+- **Started from a terminal** (`code .`): the editor has your shell's `PATH`, so its `forge` and `cargo` are KeyMoat's.
 - **Started from the dock or a launcher:** on macOS the editor may not have read your shell's start-up file. Check from the editor's own terminal with `keymoat doctor`. An integrated terminal always reads the start-up file; a background language server may not.
 
-When a tool does go through keymoat from an editor, there is no terminal: a test run works, new hosts are not allowed until you have answered the question once in a terminal, and a signing command does not run.
+When a tool does go through KeyMoat from an editor, there is no terminal: a test run works, new hosts are not allowed until you have answered the question once in a terminal, and a signing command does not run.
 
 Remember what an editor *extension* is: code inside the editor, outside the sandbox. `keymoat extensions` lists the web3 extensions you have that are worth a second look, and [Keys](keys.md) is the defence.
 
 ## In your own scripts
 
-A shell script or a `Makefile` that calls `forge`, `npm` or `anchor` goes through keymoat when those names resolve to keymoat's links, which they do in any shell that read your start-up file. Each tool call is then sandboxed on its own.
+A shell script or a `Makefile` that calls `forge`, `npm` or `anchor` goes through KeyMoat when those names resolve to KeyMoat's links, which they do in any shell that read your start-up file. Each tool call is then sandboxed on its own.
 
 To sandbox the script as a whole, including anything else it runs:
 
@@ -96,7 +96,7 @@ Inside that run, tools are not sandboxed a second time; the outer limits apply t
 | `KEYMOAT_ASSUME_YES=1` | A signing command runs without asking. |
 | `KEYMOAT_KEYS=1` | The project's keys are visible to this command. |
 | `KEYMOAT_NET=open` | No network limit for this command. |
-| `KEYMOAT=off` | This command runs without keymoat. |
+| `KEYMOAT=off` | This command runs without KeyMoat. |
 | `KEYMOAT_HOME=DIR` | Keep settings, log and vault in DIR instead of `~/.keymoat`. |
 
 [Settings](settings.md) has the full list.

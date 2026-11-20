@@ -212,7 +212,7 @@ func keysList() int {
 		}
 	}
 	if len(sol) > 0 {
-		fmt.Println("Solana keypairs in the keymoat vault (use with --keypair keymoat:NAME):")
+		fmt.Println("Solana keypairs in the KeyMoat vault (use with --keypair keymoat:NAME):")
 		for _, n := range sol {
 			addr := ""
 			if data, err := os.ReadFile(filepath.Join(vaultDir(), n+".json")); err == nil {
@@ -308,7 +308,7 @@ func moveEnvKeys(path string) error {
 			continue
 		}
 		if !strings.HasSuffix(kind, "private key") {
-			say("%s line %d: %s is a %s, which keymoat does not move. Import it yourself with `cast wallet import NAME --interactive` (or --mnemonic-path), then delete the line.", filepath.Base(path), v.Line, v.Name, kind)
+			say("%s line %d: %s is a %s, which KeyMoat does not move. Import it yourself with `cast wallet import NAME --interactive` (or --mnemonic-path), then delete the line.", filepath.Base(path), v.Line, v.Name, kind)
 			continue
 		}
 		key, err := parseEVMKey(v.Value)
@@ -336,7 +336,7 @@ func moveEnvKeys(path string) error {
 		if err := writePrivate(dest, sealed); err != nil {
 			return err
 		}
-		lines[v.Line-1] = fmt.Sprintf("# %s is now the encrypted keystore %q (moved by keymoat). Sign with: --account %s", v.Name, name, name)
+		lines[v.Line-1] = fmt.Sprintf("# %s is now the encrypted keystore %q (moved by KeyMoat). Sign with: --account %s", v.Name, name, name)
 		if err := os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0o600); err != nil {
 			return fmt.Errorf("the keystore %s was written, but %s could not be updated: %v", dest, path, err)
 		}
@@ -391,7 +391,7 @@ func moveSolanaKeypair(path string) error {
 		return fmt.Errorf("the vault entry %s was written, but the plain file could not be removed: %v", dest, err)
 	}
 	fmt.Fprintf(os.Stderr, "Moved to the vault as %q and removed the plain file.\n", name)
-	fmt.Fprintf(os.Stderr, "  Commands that used %s keep working through keymoat: it asks for the password and hands the tool the key for that one command.\n", path)
+	fmt.Fprintf(os.Stderr, "  Commands that used %s keep working through KeyMoat: it asks for the password and hands the tool the key for that one command.\n", path)
 	fmt.Fprintf(os.Stderr, "  Elsewhere:  --keypair keymoat:%s   (Anchor: --provider.wallet keymoat:%s)\n", name, name)
 	fmt.Fprintf(os.Stderr, "  To get the plain file back:  keymoat keys export %s --to FILE\n", name)
 	fmt.Fprintln(os.Stderr, "\nThe key was in a plain file until now. If this machine may have run untrusted code, move the funds to a new key.")

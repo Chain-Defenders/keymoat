@@ -156,8 +156,8 @@ func foundryKey(p *Plan, c *Context, signing bool) (key string, warn []string) {
 			p.KeyFiles = append(p.KeyFiles, filepath.Join(keystores, name))
 			key = "encrypted keystore \"" + name + "\""
 		} else {
-			key = "a keystore name keymoat does not accept"
-			warn = append(warn, "The keystore name is not a plain name, so keymoat did not open it.")
+			key = "a keystore name KeyMoat does not accept"
+			warn = append(warn, "The keystore name is not a plain name, so KeyMoat did not open it.")
 		}
 	} else if name := realEnv(c, "ETH_KEYSTORE_ACCOUNT"); name != "" && validName.MatchString(name) {
 		if signing {
@@ -401,7 +401,7 @@ func classifySolana(p *Plan, c *Context) {
 		// A key in keymoat's vault: the tool gets a temporary copy for this one command.
 		ref.flag, ref.explicit = "--keypair", explicit
 		p.VaultRefs = append(p.VaultRefs, ref)
-		keypair = "keymoat vault \"" + ref.name + "\""
+		keypair = "KeyMoat vault \"" + ref.name + "\""
 	}
 	signing := solanaSigning[sub] && !solanaReadOnly[second(pos)]
 	if p.Tool == "spl-token" {
@@ -488,7 +488,7 @@ func classifyAnchor(p *Plan, c *Context) {
 	if ref, ok := parseVaultRef(wallet); ok {
 		ref.flag, ref.explicit, ref.prepend = "--provider.wallet", explicit, true
 		p.VaultRefs = append(p.VaultRefs, ref)
-		wallet = "keymoat vault \"" + ref.name + "\""
+		wallet = "KeyMoat vault \"" + ref.name + "\""
 	} else {
 		p.KeyFiles = append(p.KeyFiles, absFrom(c.Cwd, wallet))
 	}

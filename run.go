@@ -81,7 +81,7 @@ func runTool(tool string, args []string, opts runOptions) int {
 			return execDirect(real, args, os.Environ())
 		}
 		// The variable alone proves nothing: a project could set it to switch keymoat off.
-		say("KEYMOAT_ACTIVE is set, but this is not a keymoat sandbox: ignoring it")
+		say("KEYMOAT_ACTIVE is set, but this is not a KeyMoat sandbox: ignoring it")
 	}
 	if strings.EqualFold(os.Getenv("KEYMOAT"), "off") {
 		say("off for this command (KEYMOAT=off): %s runs unprotected", name)
@@ -525,7 +525,7 @@ func askAboutHosts(fresh []string, found map[string]string, cfg *Config, trust *
 	if !interactive() {
 		return
 	}
-	fmt.Fprintf(os.Stderr, "\nkeymoat: this project's files point at %s keymoat has not seen before:\n\n", plural(len(fresh), "host", "hosts"))
+	fmt.Fprintf(os.Stderr, "\nkeymoat: this project's files point at %s KeyMoat has not seen before:\n\n", plural(len(fresh), "host", "hosts"))
 	for _, h := range fresh {
 		fmt.Fprintf(os.Stderr, "  %-40s (%s)\n", h, found[h])
 	}

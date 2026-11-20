@@ -14,7 +14,7 @@ A sandboxed command cannot read, list or write these, whatever the command is.
 | Cloud and registry credentials | `.aws`, `.azure`, `.kube`, `.config/gcloud`, `.config/gh`, `.docker/config.json`, `.netrc`, `.git-credentials`, `.cargo/credentials`, `.cargo/credentials.toml`, `.config/hub`, `.terraform.d/credentials.tfrc.json`, `.vercel`, `.config/vercel`, `.fly`, `.config/doctl` |
 | Password stores | `.password-store`, `.config/op`, `.config/Bitwarden CLI` |
 | What you typed before | `.zsh_history`, `.bash_history`, `.zhistory`, `.local/share/fish/fish_history`, `.node_repl_history`, `.python_history`, `.psql_history` |
-| keymoat's own | the vault, keys handed out for a run, `config.json`, the log |
+| KeyMoat's own | the vault, keys handed out for a run, `config.json`, the log |
 | Yours | everything under `protect` in `config.json` |
 
 `~/.npmrc` is added when it holds a token.
@@ -72,7 +72,7 @@ On Linux, add the folders where you keep other projects to `protect` if they are
 
 A named keystore is opened for reading only. It cannot be overwritten.
 
-Which file a command names is not taken on trust, because the name can come from a project file or a script. keymoat opens **one file, never a folder**, and only if it is what it claims to be: a keystore directly inside `~/.foundry/keystores`, a Solana keypair file, or a vault key keymoat itself handed out. A keystore *name* (`--account`) must be a plain name with no path in it. `ETH_KEYSTORE_ACCOUNT` counts only when it is set in your own environment, not in a project's env file, and only for a command that signs. Anything else is refused with a message.
+Which file a command names is not taken on trust, because the name can come from a project file or a script. KeyMoat opens **one file, never a folder**, and only if it is what it claims to be: a keystore directly inside `~/.foundry/keystores`, a Solana keypair file, or a vault key KeyMoat itself handed out. A keystore *name* (`--account`) must be a plain name with no path in it. `ETH_KEYSTORE_ACCOUNT` counts only when it is set in your own environment, not in a project's env file, and only for a command that signs. Anything else is refused with a message.
 
 ## Writable
 
@@ -92,7 +92,7 @@ A sandboxed command can write:
 | General | `.cache`; macOS: `Library/Caches` |
 | Yours | everything under `allowWrite` in `config.json` |
 
-Everything else under your home folder is read-only: shell start-up files, `~/.gitconfig`, editor settings and extensions, `~/.cargo/bin`, the tools themselves, and keymoat's own folder. `cargo install` is the one command that may write `~/.cargo/bin`.
+Everything else under your home folder is read-only: shell start-up files, `~/.gitconfig`, editor settings and extensions, `~/.cargo/bin`, the tools themselves, and KeyMoat's own folder. `cargo install` is the one command that may write `~/.cargo/bin`.
 
 Nothing outside this list is writable, on either system.
 

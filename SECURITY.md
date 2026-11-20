@@ -1,10 +1,10 @@
 # Security policy
 
-keymoat is a security tool. A flaw in it matters more than a flaw in most software, and we want to hear about one before anyone else does.
+KeyMoat is a security tool. A flaw in it matters more than a flaw in most software, and we want to hear about one before anyone else does.
 
 ## What counts
 
-Report it privately if code running in keymoat's sandbox can:
+Report it privately if code running in KeyMoat's sandbox can:
 
 - read a file on the [protected list](docs/protected.md), a wallet key in the project's env files, or a key from the environment, in a command that does not sign;
 - connect to a host that is not allowed, or get data out some other way that is not described in the [threat model](docs/threat-model.md);
@@ -12,7 +12,7 @@ Report it privately if code running in keymoat's sandbox can:
 - get a signing command past the confirmation;
 - read a key from the vault or a keystore without the password.
 
-Also report anything in keymoat's own handling of keys: the keystore and vault formats, temporary key files, what is written to the log.
+Also report anything in KeyMoat's own handling of keys: the keystore and vault formats, temporary key files, what is written to the log.
 
 Things the threat model already lists as limits (an allowed host used as a way out, writable caches, code outside the sandbox, the open network for Solana deploys) are known. Ideas for narrowing them are welcome as ordinary issues.
 
@@ -32,4 +32,4 @@ Please give us the chance to release a fix before you publish.
 
 ## Supported versions
 
-The latest release. keymoat has no long-term support branches.
+The latest release. KeyMoat has no long-term support branches.

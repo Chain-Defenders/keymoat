@@ -4,10 +4,10 @@ A sandboxed command can talk to local services and to a list of allowed hosts. E
 
 ## How it is enforced
 
-For each sandboxed run, keymoat starts a small proxy on your machine and tells the tools to use it (through the usual `HTTPS_PROXY` variables). The sandbox then forbids every connection that leaves the machine except through that proxy.
+For each sandboxed run, KeyMoat starts a small proxy on your machine and tells the tools to use it (through the usual `HTTPS_PROXY` variables). The sandbox then forbids every connection that leaves the machine except through that proxy.
 
-- A request to an allowed host passes through unchanged. keymoat does not open or inspect encrypted traffic; it sees the host name only.
-- A request to any other host is refused. When the command ends, keymoat names it:
+- A request to an allowed host passes through unchanged. KeyMoat does not open or inspect encrypted traffic; it sees the host name only.
+- A request to any other host is refused. When the command ends, KeyMoat names it:
 
   ```
   keymoat: blocked 2 connection attempts to telemetry.example.com
@@ -50,7 +50,7 @@ A *name* that refers to `foundry.toml` (`--fork-url mainnet`) is not a typed hos
 
 ### 3. The project's own hosts, once you said yes
 
-keymoat reads the hosts a project points at:
+KeyMoat reads the hosts a project points at:
 
 - `foundry.toml`: `[rpc_endpoints]` and any other URL, with `${VARIABLES}` filled in;
 - `hardhat.config.*`: any URL;
@@ -68,7 +68,7 @@ keymoat: this project's files point at 2 hosts keymoat has not seen before:
 Let this project's commands connect to them? [y/N]
 ```
 
-`y` allows them for this project from now on. `n` keeps them blocked, and keymoat does not ask about them again.
+`y` allows them for this project from now on. `n` keeps them blocked, and KeyMoat does not ask about them again.
 
 **Why it asks.** A project file is something a dependency can rewrite. If hosts in project files were trusted automatically, an install script could add its own server to `foundry.toml` and the next run would let it through. Asking once means a new host is always something you saw.
 
@@ -81,7 +81,7 @@ keymoat allow rpc.mycompany.com            # for this project
 keymoat allow --global rpc.mycompany.com   # for every project
 ```
 
-You can pass a full URL; keymoat takes the host from it. Allowing a host by hand also undoes an earlier `n`.
+You can pass a full URL; KeyMoat takes the host from it. Allowing a host by hand also undoes an earlier `n`.
 
 ### 5. The Solana tool's own endpoint
 
@@ -110,7 +110,7 @@ Some commands always run with the network open, because their traffic cannot go 
 |---|---|---|
 | WebSocket RPC endpoints (`wss://`) | Most tools do not send WebSocket traffic through a proxy. | Use the HTTPS endpoint, or `KEYMOAT_NET=open` for that command. |
 | Private git dependencies over SSH | No SSH key is readable in the sandbox. | Install them with `KEYMOAT=off`, or use an HTTPS URL with a token the tool is given. |
-| A corporate proxy you already use | keymoat's proxy connects directly and replaces your proxy settings inside the sandbox. | `KEYMOAT_NET=open`. |
+| A corporate proxy you already use | KeyMoat's proxy connects directly and replaces your proxy settings inside the sandbox. | `KEYMOAT_NET=open`. |
 
 Public GitHub repositories named by their SSH address (`git@github.com:org/repo`) are fetched over HTTPS automatically, so most `forge install` and git dependencies work unchanged.
 
@@ -125,7 +125,7 @@ keymoat log
 2026-11-12 12:00  blocked-host   npx     www.google-analytics.com
 ```
 
-A blocked host you do not recognise after an install is worth a look: it is exactly what keymoat is there to show.
+A blocked host you do not recognise after an install is worth a look: it is exactly what KeyMoat is there to show.
 
 ## Limits
 

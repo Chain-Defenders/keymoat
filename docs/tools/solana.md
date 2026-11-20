@@ -1,8 +1,8 @@
 # Solana and Anchor
 
-`anchor` and `cargo` run your project's code and are sandboxed. `solana` and `spl-token` run no project code; keymoat only steps in before they sign.
+`anchor` and `cargo` run your project's code and are sandboxed. `solana` and `spl-token` run no project code; KeyMoat only steps in before they sign.
 
-The Solana wallet deserves attention: by default it is one plain file, `~/.config/solana/id.json`, used for local tests and for mainnet alike, and readable by every build script and test dependency. keymoat changes that in three ways.
+The Solana wallet deserves attention: by default it is one plain file, `~/.config/solana/id.json`, used for local tests and for mainnet alike, and readable by every build script and test dependency. KeyMoat changes that in three ways.
 
 ## 1. Builds cannot read the wallet
 
@@ -26,7 +26,7 @@ anchor test
 keymoat: tests run with a throwaway wallet, not your own (pass --provider.wallet to choose one)
 ```
 
-On a local validator, keymoat runs the tests with its own wallet (`~/.keymoat/dev-wallet.json`), which has never held anything. Anchor funds it when it starts the validator, so tests behave as before. Your real wallet is unreadable for the whole run, including from the TypeScript tests and their dependencies.
+On a local validator, KeyMoat runs the tests with its own wallet (`~/.keymoat/dev-wallet.json`), which has never held anything. Anchor funds it when it starts the validator, so tests behave as before. Your real wallet is unreadable for the whole run, including from the TypeScript tests and their dependencies.
 
 This applies to `anchor test` and `anchor localnet` when the cluster is local (`localnet` in `Anchor.toml`, or a `localhost` URL) and you did not pass `--provider.wallet`.
 
@@ -65,7 +65,7 @@ Devnet and testnet take a `y`; mainnet and any other endpoint take the full word
 
 **The network is open for live deploys.** A Solana deploy sends transactions straight to validators, which a proxy cannot carry, so these commands run without the network limit. Files stay protected: the wallet you named is readable and nothing else on the protected list is.
 
-Note what that means for `anchor test`, `run` and `migrate` on a live cluster: project scripts run with the wallet readable and the network open. keymoat says so on the confirmation. Use a wallet that holds only what that run needs.
+Note what that means for `anchor test`, `run` and `migrate` on a live cluster: project scripts run with the wallet readable and the network open. KeyMoat says so on the confirmation. Use a wallet that holds only what that run needs.
 
 ## Encrypting the wallet
 
@@ -73,7 +73,7 @@ Note what that means for `anchor test`, `run` and `migrate` on a live cluster: p
 keymoat keys move ~/.config/solana/id.json
 ```
 
-moves the keypair into keymoat's encrypted vault and removes the plain file. Nothing in `Anchor.toml` or the Solana tool's settings has to change: when a command needs that wallet, keymoat asks for the password and hands the tool the keypair for that one command.
+moves the keypair into KeyMoat's encrypted vault and removes the plain file. Nothing in `Anchor.toml` or the Solana tool's settings has to change: when a command needs that wallet, KeyMoat asks for the password and hands the tool the keypair for that one command.
 
 ```
 $ solana transfer DEST 1
@@ -112,18 +112,18 @@ The cluster comes from `-u` / `--url` or from the tool's settings; the keypair f
 
 ## Cargo
 
-| Command | Under keymoat |
+| Command | Under KeyMoat |
 |---|---|
 | `cargo build`, `test`, `check`, `run`, `build-sbf`, `test-sbf` | Sandboxed, no keys. |
 | `cargo install NAME` | Sandboxed; may also write `~/.cargo/bin`. |
 | `cargo publish`, `login`, `owner`, `yank` | Sandboxed; may read the crates.io token. |
 
-`cargo` is behind keymoat for every Rust project, not only Solana ones. An editor's Rust language server usually calls `cargo` on its own; see [Pipelines and editors](../automation.md#in-an-editor).
+`cargo` is behind KeyMoat for every Rust project, not only Solana ones. An editor's Rust language server usually calls `cargo` on its own; see [Pipelines and editors](../automation.md#in-an-editor).
 
 ## Known edges
 
 - **A pinned Rust version that is not installed yet** (`rust-toolchain.toml`) cannot be installed from inside a build. Run `rustup toolchain install` in the project's folder once, then build.
-- **Toolchain installs and updates** (`rustup update`, `agave-install update`, `avm install`) write outside the project. Run them outside keymoat; they are not behind it anyway, except through `cargo install`.
+- **Toolchain installs and updates** (`rustup update`, `agave-install update`, `avm install`) write outside the project. Run them outside KeyMoat; they are not behind it anyway, except through `cargo install`.
 - **Tests against a validator outside the sandbox on Linux** cannot reach it: on Linux a sandboxed command has its own network. Let `anchor test` start the validator, or use `KEYMOAT_NET=open`.
-- **Linux:** the Solana and Anchor tools have been tested under keymoat on macOS only so far.
-- **Old Anchor templates** may not build with today's crates. That is unrelated to keymoat: the same error appears without it.
+- **Linux:** the Solana and Anchor tools have been tested under KeyMoat on macOS only so far.
+- **Old Anchor templates** may not build with today's crates. That is unrelated to KeyMoat: the same error appears without it.

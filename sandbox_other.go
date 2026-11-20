@@ -9,7 +9,7 @@ import (
 )
 
 func sandboxAvailable() error {
-	return fmt.Errorf("keymoat has no sandbox for %s; on Windows, use it inside WSL", runtime.GOOS)
+	return fmt.Errorf("KeyMoat has no sandbox for %s; on Windows, use it inside WSL", runtime.GOOS)
 }
 
 func sandboxCommand(s Spec, real string, args []string) (*exec.Cmd, func(), error) {

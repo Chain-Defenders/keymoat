@@ -121,7 +121,7 @@ func decryptEVMKey(data []byte, password string) ([]byte, error) {
 		return nil, err
 	}
 	if ks.Version != 3 || ks.Crypto.KDF != "scrypt" || ks.Crypto.Cipher != "aes-128-ctr" {
-		return nil, errors.New("not a keystore keymoat can read")
+		return nil, errors.New("not a keystore KeyMoat can read")
 	}
 	salt, err1 := hex.DecodeString(ks.Crypto.KDFParams.Salt)
 	iv, err2 := hex.DecodeString(ks.Crypto.CipherParams.IV)
@@ -131,11 +131,11 @@ func decryptEVMKey(data []byte, password string) ([]byte, error) {
 		return nil, err
 	}
 	if !saneScrypt(ks.Crypto.KDFParams.N, ks.Crypto.KDFParams.R, ks.Crypto.KDFParams.P) || ks.Crypto.KDFParams.DKLen != 32 {
-		return nil, errors.New("not a keystore keymoat can read")
+		return nil, errors.New("not a keystore KeyMoat can read")
 	}
 	derived, err := scrypt.Key([]byte(password), salt, ks.Crypto.KDFParams.N, ks.Crypto.KDFParams.R, ks.Crypto.KDFParams.P, ks.Crypto.KDFParams.DKLen)
 	if err != nil || len(derived) < 32 {
-		return nil, errors.New("not a keystore keymoat can read")
+		return nil, errors.New("not a keystore KeyMoat can read")
 	}
 	if subtle.ConstantTimeCompare(keccak256(derived[16:32], ct), mac) != 1 {
 		return nil, errWrongPassword
@@ -249,7 +249,7 @@ func decryptSolanaKeypair(data []byte, password string) (ed25519.PrivateKey, err
 		return nil, err
 	}
 	if e.Version != 1 || e.Kind != "solana-keypair" || e.KDF != "scrypt" {
-		return nil, errors.New("not a vault entry keymoat can read")
+		return nil, errors.New("not a vault entry KeyMoat can read")
 	}
 	salt, err1 := base64.StdEncoding.DecodeString(e.Salt)
 	nonce, err2 := base64.StdEncoding.DecodeString(e.Nonce)
@@ -258,11 +258,11 @@ func decryptSolanaKeypair(data []byte, password string) (ed25519.PrivateKey, err
 		return nil, err
 	}
 	if !saneScrypt(e.N, e.R, e.P) {
-		return nil, errors.New("not a vault entry keymoat can read")
+		return nil, errors.New("not a vault entry KeyMoat can read")
 	}
 	aead, err := vaultAEAD(password, salt, e.N, e.R, e.P)
 	if err != nil || len(nonce) != aead.NonceSize() {
-		return nil, errors.New("not a vault entry keymoat can read")
+		return nil, errors.New("not a vault entry KeyMoat can read")
 	}
 	key, err := aead.Open(nil, nonce, ct, []byte("keymoat-vault-v1:"+e.Address))
 	if err != nil {

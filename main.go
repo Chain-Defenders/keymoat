@@ -11,17 +11,17 @@ import (
 
 var version = "0.1.0"
 
-const usage = `keymoat keeps wallet keys away from the code you build, test and install.
+const usage = `KeyMoat keeps wallet keys away from the code you build, test and install.
 
 Set up
   keymoat install [--shell]      stand in front of forge, cast, anchor, solana, cargo, npm, pnpm, yarn and bun
   keymoat doctor                 check that it is working, and what is still in plain text
   keymoat uninstall              remove the tool links
 
-Every day (nothing to type: the tools go through keymoat once installed)
+Every day (nothing to type: the tools go through KeyMoat once installed)
   keymoat run [--keys] [--open-net] -- COMMAND ...     run any command in the sandbox
   KEYMOAT_KEYS=1 COMMAND ...     let this one command see the project's keys
-  KEYMOAT=off COMMAND ...        run this one command without keymoat
+  KEYMOAT=off COMMAND ...        run this one command without KeyMoat
 
 Keys
   keymoat scan [--history] [DIR...]     find wallet keys kept in plain text

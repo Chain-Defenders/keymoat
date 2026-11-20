@@ -166,7 +166,7 @@ func reviewExtensions(list []extension, now time.Time) []extensionReport {
 		}
 		if x.Web3 {
 			if !knownPublisher(x.Publisher) {
-				reasons = append(reasons, "a web3 extension from a publisher keymoat does not know: look the publisher up")
+				reasons = append(reasons, "a web3 extension from a publisher KeyMoat does not know: look the publisher up")
 			}
 			if x.FromFile {
 				reasons = append(reasons, "installed from a file, not from the store")
@@ -219,6 +219,6 @@ func cmdExtensions(args []string) int {
 		}
 		fmt.Printf("    %s\n\n", r.Folder)
 	}
-	fmt.Println("This is a list of things to check, not a verdict. An extension runs outside keymoat's sandbox and can read any file you can; keys in an encrypted keystore are what it cannot use.")
+	fmt.Println("This is a list of things to check, not a verdict. An extension runs outside KeyMoat's sandbox and can read any file you can; keys in an encrypted keystore are what it cannot use.")
 	return 0
 }

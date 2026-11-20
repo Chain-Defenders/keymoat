@@ -1,10 +1,10 @@
 # Commands
 
-Every `keymoat` command. Most days you type none of them: your tools go through keymoat on their own once it is installed.
+Every `keymoat` command. Most days you type none of them: your tools go through KeyMoat on their own once it is installed.
 
 | Command | In one line |
 |---|---|
-| [`install`](#keymoat-install) | Put keymoat in front of your tools. |
+| [`install`](#keymoat-install) | Put KeyMoat in front of your tools. |
 | [`uninstall`](#keymoat-uninstall) | Take it out again. |
 | [`doctor`](#keymoat-doctor) | Check that it works and what is still in plain text. |
 | [`run`](#keymoat-run) | Run any command in the sandbox. |
@@ -21,16 +21,16 @@ Every `keymoat` command. Most days you type none of them: your tools go through 
 keymoat install [--shell] [--tools NAME,NAME,...]
 ```
 
-Makes a link named after each tool in `~/.keymoat/bin`, pointing at keymoat. With that folder first on your `PATH`, typing `forge` runs keymoat, which runs the real `forge`.
+Makes a link named after each tool in `~/.keymoat/bin`, pointing at KeyMoat. With that folder first on your `PATH`, typing `forge` runs KeyMoat, which runs the real `forge`.
 
 | Option | Does |
 |---|---|
 | `--shell` | Adds the `PATH` line to the end of `~/.zshrc`, or `~/.bashrc` and `~/.bash_profile`. Without it, the line is printed for you to add. |
-| `--tools a,b` | Links only these names. Use it to add a tool keymoat does not cover by default, such as `node` or `make`. A tool added this way runs in the sandbox with no keys. |
+| `--tools a,b` | Links only these names. Use it to add a tool KeyMoat does not cover by default, such as `node` or `make`. A tool added this way runs in the sandbox with no keys. |
 
 By default it links whichever of these are installed: `forge`, `cast`, `anchor`, `solana`, `spl-token`, `cargo`, `npm`, `npx`, `pnpm`, `pnpx`, `yarn`, `bun`, `bunx`. Run it again after installing a new tool.
 
-The links point at the keymoat program where it is now. If you move it, run `keymoat install` again.
+The links point at the KeyMoat program where it is now. If you move it, run `keymoat install` again.
 
 ## keymoat uninstall
 
@@ -49,7 +49,7 @@ keymoat doctor
 Three checks:
 
 - **Sandbox:** runs a real command in the sandbox and makes sure it cannot read a protected file.
-- **Tools:** for each installed tool, whether typing its name reaches keymoat.
+- **Tools:** for each installed tool, whether typing its name reaches KeyMoat.
 - **Keys in plain text:** the Solana tool's default wallet and the current project's env files.
 
 `keymoat doctor --json` prints the same checks as one JSON object, for editors and scripts: `sandbox` (`ok`, `detail`), `tools` (each with `name`, `through`, `found`, `real`), `pathFirst`, `shimDir`, `project` and `plainKeys` (each with `file`, `line`, `name`, `kind`, `fix`).
@@ -62,7 +62,7 @@ Exits with code 1 when something is wrong.
 keymoat run [--keys] [--open-net] -- COMMAND [ARGUMENTS...]
 ```
 
-Runs any command the way keymoat runs your tools. For a tool keymoat knows, this is the same as typing the tool's name. For anything else (`make`, `node`, a shell script), the command runs in the sandbox with no keys.
+Runs any command the way KeyMoat runs your tools. For a tool KeyMoat knows, this is the same as typing the tool's name. For anything else (`make`, `node`, a shell script), the command runs in the sandbox with no keys.
 
 | Option | Does |
 |---|---|
@@ -97,7 +97,7 @@ keymoat keys export NAME --to FILE
 
 | Sub-command | Does |
 |---|---|
-| `move` | With no file: moves every private key in the current project's env files into Foundry keystores. With an env file: that file. With a Solana keypair file: moves it into keymoat's vault and removes the plain file. Asks for a name and a password (8 characters or more). |
+| `move` | With no file: moves every private key in the current project's env files into Foundry keystores. With an env file: that file. With a Solana keypair file: moves it into KeyMoat's vault and removes the plain file. Asks for a name and a password (8 characters or more). |
 | `list` | Lists Foundry keystores and vault keys, with the address of each vault key. |
 | `export` | Writes a vault key back out as a plain Solana keypair file. The vault entry stays. A Foundry keystore is exported with Foundry: `cast wallet decrypt-keystore`. |
 
@@ -122,7 +122,7 @@ keymoat extensions [--json]
 Reads the extensions installed in VS Code, VS Code Insiders, VSCodium, Cursor, Windsurf, Antigravity, Trae, Kiro and VS Code Server, and lists the ones worth checking:
 
 - a name very close to a well-known web3 extension, from a different publisher;
-- a web3 extension from a publisher keymoat does not know;
+- a web3 extension from a publisher KeyMoat does not know;
 - a web3 extension installed from a file, not from the store;
 - a web3 extension from an unknown publisher installed in the last two weeks.
 
@@ -151,7 +151,7 @@ Command lines are stored with any key or password removed.
 | Code | Meaning |
 |---|---|
 | The tool's own | For any command that ran. |
-| 1 | A signing command was declined, or a keymoat command found a problem (`scan`, `doctor`). |
+| 1 | A signing command was declined, or a KeyMoat command found a problem (`scan`, `doctor`). |
 | 2 | Wrong usage, or a broken settings file. |
 | 126 | The sandbox is not available on this system. |
 | 127 | The tool is not installed. |

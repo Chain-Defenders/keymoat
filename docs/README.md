@@ -1,12 +1,12 @@
-# keymoat documentation
+# KeyMoat documentation
 
-keymoat keeps wallet keys out of reach of the code you build, test and install. These pages explain how to set it up, what it does on each command, and where its protection ends.
+KeyMoat keeps wallet keys out of reach of the code you build, test and install. These pages explain how to set it up, what it does on each command, and where its protection ends.
 
 ## Start here
 
 | Page | Read it when |
 |---|---|
-| [Getting started](getting-started.md) | You are installing keymoat for the first time. Ten minutes, start to finish. |
+| [Getting started](getting-started.md) | You are installing KeyMoat for the first time. Ten minutes, start to finish. |
 | [How it works](how-it-works.md) | You want to know what happens when you type `forge test`. |
 | [Threat model](threat-model.md) | You are deciding whether to rely on it: what it stops, what it does not. |
 
@@ -32,9 +32,9 @@ keymoat keeps wallet keys out of reach of the code you build, test and install. 
 | Page | Covers |
 |---|---|
 | [Commands](commands.md) | Every `keymoat` command and its options. |
-| [Settings](settings.md) | `config.json`, the environment switches, and the files keymoat keeps. |
+| [Settings](settings.md) | `config.json`, the environment switches, and the files KeyMoat keeps. |
 | [What is protected](protected.md) | The exact folders and files that are unreadable or unwritable, per system. |
 | [Platforms](platforms.md) | macOS, Linux and Windows: what each uses and how they differ. |
-| [Troubleshooting](troubleshooting.md) | A command fails under keymoat: what the message means and what to do. |
+| [Troubleshooting](troubleshooting.md) | A command fails under KeyMoat: what the message means and what to do. |
 
 The [changelog](../CHANGELOG.md) and the [security policy](../SECURITY.md) are at the top of the repository.

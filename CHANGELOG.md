@@ -2,14 +2,14 @@
 
 ## 0.1.0
 
-First version. keymoat replaces forge-guard, which tried to detect key theft as it happened; keymoat prevents it.
+First version. KeyMoat replaces forge-guard, which tried to detect key theft as it happened; KeyMoat prevents it.
 
 - **Sandbox** for `forge`, `anchor`, `cargo`, `npm`, `npx`, `pnpm`, `pnpx`, `yarn`, `bun` and `bunx`: keys, credentials, browser profiles and shell history are unreadable; only the project and the toolchains' caches are writable. macOS (the system sandbox) and Linux (bubblewrap).
 - **Hidden keys:** a wallet key in the project's env files or in the environment is not visible to builds, tests and installs; the rest of the env file still is.
 - **Network allowlist** through a local proxy, with a one-time question about the hosts a project's files name.
 - **Confirmation before signing** for `forge script --broadcast`, `forge create`, `cast send`, Hardhat on a live network, deploy scripts, `solana`, `spl-token` and `anchor`. The chain is asked of the endpoint.
 - **Throwaway wallet** for `anchor test` on a local validator.
-- **`keymoat scan`** for wallet keys in plain text, **`keymoat keys move`** into a Foundry keystore (EVM) or keymoat's encrypted vault (Solana), `keys list`, `keys export`.
+- **`keymoat scan`** for wallet keys in plain text, **`keymoat keys move`** into a Foundry keystore (EVM) or KeyMoat's encrypted vault (Solana), `keys list`, `keys export`.
 - **`keymoat install`**, `uninstall`, `doctor`, `run`, `allow`, `extensions`, `log`.
 
 Hardening from the pre-release review:

@@ -160,7 +160,7 @@ func cmdUninstall(args []string) int {
 			}
 		}
 		if err := os.WriteFile(f, []byte(strings.Join(keep, "\n")), 0o644); err == nil {
-			say("removed keymoat's line from %s", f)
+			say("removed KeyMoat's line from %s", f)
 		}
 	}
 	say("the tool links are gone. Your settings, the log and the vault are still in %s.", stateDir())
@@ -289,9 +289,9 @@ func cmdDoctor(args []string) int {
 		case t.Found == "":
 			bad("%s: not found on the PATH", t.Name)
 		case t.Through:
-			good("%-10s goes through keymoat  (the tool itself: %s)", t.Name, t.Real)
+			good("%-10s goes through KeyMoat  (the tool itself: %s)", t.Name, t.Real)
 		default:
-			bad("%-10s runs directly from %s, not through keymoat", t.Name, t.Found)
+			bad("%-10s runs directly from %s, not through KeyMoat", t.Name, t.Found)
 		}
 	}
 	if !r.PathFirst {

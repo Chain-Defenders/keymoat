@@ -1,6 +1,6 @@
 # Foundry
 
-`forge` runs your project's code and is sandboxed. `cast` talks to a chain and runs as it is; keymoat only steps in before it sends.
+`forge` runs your project's code and is sandboxed. `cast` talks to a chain and runs as it is; KeyMoat only steps in before it sends.
 
 ## What works without changes
 
@@ -17,11 +17,11 @@ forge fmt, snapshot, coverage, doc
 - **Fork tests** need the RPC host. A name from `foundry.toml` (`--fork-url mainnet`) works once you have said yes to that project's hosts; a full URL on the command line works straight away. See [Network](../network.md).
 - **`anvil` inside a run** works: a sandboxed command can listen on a local port and reach it.
 
-`anvil` and `chisel` themselves are not put behind keymoat: they run no project code.
+`anvil` and `chisel` themselves are not put behind KeyMoat: they run no project code.
 
 ## What tests and scripts can see
 
-Solidity code reaches the outside world through cheatcodes. Under keymoat:
+Solidity code reaches the outside world through cheatcodes. Under KeyMoat:
 
 | Cheatcode | In a build or test |
 |---|---|
@@ -41,7 +41,7 @@ If one of your own tests reads a key from the environment, give the test a throw
 forge script script/Deploy.s.sol --rpc-url mainnet --broadcast --account deployer
 ```
 
-keymoat shows the confirmation, with the chain the endpoint reports, then runs the script in the sandbox with:
+KeyMoat shows the confirmation, with the chain the endpoint reports, then runs the script in the sandbox with:
 
 - the project's env files readable;
 - the keystore `deployer` readable, and no other keystore;
@@ -49,7 +49,7 @@ keymoat shows the confirmation, with the chain the endpoint reports, then runs t
 
 Foundry asks for the keystore password itself.
 
-### Ways to sign, and what keymoat shows
+### Ways to sign, and what KeyMoat shows
 
 | You pass | The confirmation says | Note |
 |---|---|---|
@@ -66,7 +66,7 @@ A keystore is named by a plain name: `--account deployer`, not a path.
 
 ### Dry runs
 
-`forge script` without `--broadcast` is a simulation and is not asked about. It also does not see the project's keys. If your script reads `PRIVATE_KEY` from the environment, a dry run fails with a note from keymoat. Two ways out:
+`forge script` without `--broadcast` is a simulation and is not asked about. It also does not see the project's keys. If your script reads `PRIVATE_KEY` from the environment, a dry run fails with a note from KeyMoat. Two ways out:
 
 - **Better:** call `vm.startBroadcast()` with no argument and pass `--account NAME`. A dry run with `--account` can read that keystore.
 - **Quick:** `KEYMOAT_KEYS=1 forge script script/Deploy.s.sol --rpc-url mainnet`.
@@ -77,7 +77,7 @@ A keystore is named by a plain name: `--account deployer`, not a path.
 
 ## cast
 
-| Command | What keymoat does |
+| Command | What KeyMoat does |
 |---|---|
 | `cast call`, `balance`, `block`, `storage`, `run`, and other reads | Nothing. |
 | `cast send`, `batch-send` (and their short names) | Shows the confirmation: chain, key, recipient, function and value. |
@@ -90,7 +90,7 @@ A keystore is named by a plain name: `--account deployer`, not a path.
 
 ## foundry.toml
 
-keymoat reads two things from it:
+KeyMoat reads two things from it:
 
 - `[rpc_endpoints]`, to resolve a name like `mainnet` to its URL for the confirmation, with `${VARIABLES}` filled in from the environment and the project's `.env`;
 - every URL in the file, as hosts the project wants to reach.
@@ -101,4 +101,4 @@ It does not change the file.
 
 - **WebSocket endpoints** (`wss://`) do not go through the network filter. Use the HTTPS endpoint for fork tests, or `KEYMOAT_NET=open`.
 - **Private submodules over SSH** do not install: no SSH key is readable. Run that one `forge install` with `KEYMOAT=off`.
-- **`foundryup`** is not put behind keymoat; update Foundry as usual.
+- **`foundryup`** is not put behind KeyMoat; update Foundry as usual.

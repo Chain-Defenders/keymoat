@@ -1,6 +1,6 @@
 # Keys
 
-The sandbox keeps keys away from tools that run through keymoat. A key in a plain file is still readable by everything else on your machine: an editor extension, a script you run directly, a backup tool. This page is about getting keys out of plain files.
+The sandbox keeps keys away from tools that run through KeyMoat. A key in a plain file is still readable by everything else on your machine: an editor extension, a script you run directly, a backup tool. This page is about getting keys out of plain files.
 
 ## Find them
 
@@ -40,7 +40,7 @@ Dependency and build folders (`node_modules`, `lib`, `target`, `out`, ...) are s
 
 ### What counts as a wallet key
 
-keymoat goes by the shape of a value:
+KeyMoat goes by the shape of a value:
 
 | Shape | Treated as |
 |---|---|
@@ -75,8 +75,8 @@ Moved to /Users/you/.foundry/keystores/deployer and removed from .env.
 
 What happened:
 
-1. The key was encrypted with your password into a standard keystore file (Web3 Secret Storage, version 3) in `~/.foundry/keystores`. This is Foundry's own format and folder: `cast wallet list` shows it, and keymoat is not needed to use it.
-2. keymoat opened the new keystore with your password and compared the result with the original. Only then did it touch the env file.
+1. The key was encrypted with your password into a standard keystore file (Web3 Secret Storage, version 3) in `~/.foundry/keystores`. This is Foundry's own format and folder: `cast wallet list` shows it, and KeyMoat is not needed to use it.
+2. KeyMoat opened the new keystore with your password and compared the result with the original. Only then did it touch the env file.
 3. The line in `.env` became a comment saying where the key went.
 
 ### What changes in your scripts
@@ -106,7 +106,7 @@ Foundry asks for the keystore's password when it signs.
 
 ### Seed phrases and Hardhat
 
-keymoat does not move a seed phrase. Import it yourself with `cast wallet import NAME --interactive` (or `--mnemonic-path`), then delete the line.
+KeyMoat does not move a seed phrase. Import it yourself with `cast wallet import NAME --interactive` (or `--mnemonic-path`), then delete the line.
 
 For Hardhat, a Foundry keystore does not help. Use Hardhat's own encrypted store (`npx hardhat keystore set NAME` in Hardhat 3, or configuration variables in Hardhat 2) and delete the line from `.env`.
 
@@ -124,11 +124,11 @@ Again:
 Moved to the vault as "main" and removed the plain file.
 ```
 
-Solana has no standard encrypted keypair file, so the keypair goes into keymoat's own vault in `~/.keymoat/vault`, encrypted with scrypt and AES-256-GCM. As with an EVM key, the entry is opened and compared before the plain file is removed.
+Solana has no standard encrypted keypair file, so the keypair goes into KeyMoat's own vault in `~/.keymoat/vault`, encrypted with scrypt and AES-256-GCM. As with an EVM key, the entry is opened and compared before the plain file is removed.
 
 ### Using it afterwards
 
-Nothing in your settings has to change. The Solana tool's settings and your `Anchor.toml` still point at the old path. When a command needs that wallet, keymoat:
+Nothing in your settings has to change. The Solana tool's settings and your `Anchor.toml` still point at the old path. When a command needs that wallet, KeyMoat:
 
 1. asks for the vault password;
 2. writes the keypair to a private temporary file;
@@ -150,7 +150,7 @@ anchor deploy --provider.wallet keymoat:main
 
 Commands that do not use the wallet (`solana account ADDRESS`, `solana program show`, `solana cluster-version`) do not ask for the password. `solana address` and `solana balance` do, because they read the wallet to know its address.
 
-This works only through keymoat. A tool run with `KEYMOAT=off`, or on a machine without keymoat, finds no file at the old path.
+This works only through KeyMoat. A tool run with `KEYMOAT=off`, or on a machine without KeyMoat, finds no file at the old path.
 
 ### Getting the plain file back
 
@@ -158,7 +158,7 @@ This works only through keymoat. A tool run with `KEYMOAT=off`, or on a machine 
 keymoat keys export main --to ~/backup/id.json
 ```
 
-writes the keypair in plain text and leaves the vault entry in place. Do this before you remove keymoat or move to another machine.
+writes the keypair in plain text and leaves the vault entry in place. Do this before you remove KeyMoat or move to another machine.
 
 ## List what is encrypted
 
@@ -181,4 +181,4 @@ Solana keypairs in the keymoat vault (use with --keypair keymoat:NAME):
 
 ## Better than a password
 
-A keystore protects a key at rest. While a deploy runs, the key is in memory. For anything of value, sign with a hardware wallet (`--ledger`, `--trezor`, `usb://ledger`) or a multisig; keymoat passes those through and shows them on the confirmation.
+A keystore protects a key at rest. While a deploy runs, the key is in memory. For anything of value, sign with a hardware wallet (`--ledger`, `--trezor`, `usb://ledger`) or a multisig; KeyMoat passes those through and shows them on the confirmation.

@@ -1,6 +1,6 @@
 # Getting started
 
-By the end of this page your usual commands run through keymoat, and you know what is still in plain text on your machine.
+By the end of this page your usual commands run through KeyMoat, and you know what is still in plain text on your machine.
 
 ## Before you start
 
@@ -31,7 +31,7 @@ This does two things:
 - makes a link for each tool you have installed (`forge`, `cast`, `anchor`, `solana`, `spl-token`, `cargo`, `npm`, `npx`, `pnpm`, `pnpx`, `yarn`, `bun`, `bunx`) in `~/.keymoat/bin`;
 - adds one line to the end of `~/.zshrc` (or `~/.bashrc` and `~/.bash_profile`) that puts that folder first on your `PATH`.
 
-Without `--shell`, keymoat prints the line and you add it yourself. It must come **after** the lines that nvm, cargo and foundry add, so put it last.
+Without `--shell`, KeyMoat prints the line and you add it yourself. It must come **after** the lines that nvm, cargo and foundry add, so put it last.
 
 Open a new terminal.
 
@@ -64,7 +64,7 @@ npm install
 anchor build
 ```
 
-Nothing looks different until something is blocked or a command is about to sign. The first time you run a command in a project whose files name RPC endpoints, keymoat asks once whether that project may connect to them:
+Nothing looks different until something is blocked or a command is about to sign. The first time you run a command in a project whose files name RPC endpoints, KeyMoat asks once whether that project may connect to them:
 
 ```
 keymoat: this project's files point at 2 hosts keymoat has not seen before:
@@ -79,7 +79,7 @@ Answer `y` if they are yours. [Network](network.md) explains why it asks.
 
 ## 5. Get your keys out of plain text
 
-The sandbox protects keys from the tools that go through keymoat. It cannot protect a plain file from a program that does not, such as an editor extension. So finish the job:
+The sandbox protects keys from the tools that go through KeyMoat. It cannot protect a plain file from a program that does not, such as an editor extension. So finish the job:
 
 ```
 keymoat scan              # what is in plain text
