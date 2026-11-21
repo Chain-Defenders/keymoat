@@ -1,5 +1,9 @@
 # KeyMoat
 
+<p align="center">
+  <img src="media/icon.png" alt="KeyMoat" width="200"/>
+</p>
+
 Keeps wallet keys out of reach of the code you build, test and install.
 
 A web3 developer runs other people's code all day: a dependency's install script, a build script, a test helper, a Solidity library with `ffi`. Any of it can read the private key in `.env`, the Solana wallet in `~/.config/solana/id.json`, the SSH keys, the browser's wallet extension, and send them away. That is how developers have lost funds to fake packages and poisoned dependencies.
